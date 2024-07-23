@@ -1,0 +1,24 @@
+version: "3"
+
+volumes:
+  web-keys:
+  db-data:
+
+services:
+  writefreely-web:
+    container_name: "writefreely-web"
+    build:
+      context: .
+
+    volumes:
+      - "web-keys:/var/lib/writefreely/keys/"
+#      - "db-data:/var/lib/writefreely/data/"
+#      - "./config.ini:/app/config.ini"
+
+    ports:
+      - "${DOCKER_WRITEFREELY_HOST_PORT:-8080}:8080"
+
+    env_file:
+      - .env
+
+    restart: unless-stopped

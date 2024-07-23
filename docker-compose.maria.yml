@@ -1,0 +1,53 @@
+version: "3"
+
+volumes:
+  web-keys:
+  db-data:
+
+networks:
+  external_writefreely:
+  internal_writefreely:
+    internal: true
+
+services:
+  writefreely-web:
+    container_name: "writefreely-web"
+    build:
+      context: .
+
+    volumes:
+      - "web-keys:/var/lib/writefreely/keys/"
+#      - "./config.ini:/app/config.ini"
+
+    networks:
+      - "internal_writefreely"
+      - "external_writefreely"
+
+    ports:
+      - "${DOCKER_WRITEFREELY_HOST_PORT:-8080}:8080"
+
+    env_file:
+      - .env
+
+    depends_on:
+      - "writefreely-db"
+
+    restart: unless-stopped
+
+  writefreely-db:
+    container_name: "writefreely-db"
+    image: "mariadb:latest"
+
+    volumes:
+      - "db-data:/var/lib/mysql/data"
+
+    networks:
+      - "internal_writefreely"
+
+    environment:
+      - MARIADB_USER=${DATABASE_USERNAME:-writefreely}
+      - MARIADB_PASSWORD=${DATABASE_PASSWORD?user_password_required}
+      - MARIADB_ROOT_PASSWORD=${DATABASE_PASSWORD?root_password_required}
+      - MARIADB_DATABASE=${DATABASE_DATABASE:-writefreely}
+
+    restart: unless-stopped
