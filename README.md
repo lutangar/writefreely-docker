@@ -4,7 +4,7 @@ This repository contains Docker and Docker Compose configurations for running __
 
 ## Getting started
 
-Create a `.env` configuration file, base on one of the provided model:
+The .env configuration file must be created from the model provided and adjusted accordingly:
 ```sh
 cp .env.sqlite .env
 ```
@@ -110,4 +110,4 @@ docker compose up --build -f docker-compose.maria.yml --env-file .env.maria
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the GPL-3.0 License. See the LICENSE file for details.
