@@ -1,9 +1,5 @@
 version: "3"
 
-volumes:
-  web-keys:
-  db-data:
-
 services:
   writefreely-web:
     container_name: "writefreely-web"
@@ -11,9 +7,11 @@ services:
       context: .
 
     volumes:
-      - "web-keys:/var/lib/writefreely/keys/"
-#      - "db-data:/var/lib/writefreely/data/"
-#      - "./config.ini:/app/config.ini"
+      - ./keys:/var/lib/writefreely/keys/
+      - ./data:/var/lib/writefreely/data/
+      - ./pages:/usr/share/writefreely/pages
+      - ./static:/usr/share/writefreely/static
+      - ./templates:/usr/share/writefreely/templates
 
     ports:
       - "${DOCKER_WRITEFREELY_HOST_PORT:-8080}:8080"
